@@ -33,7 +33,7 @@ function Enemy(x, y) {
 
 const enemies = {
     enemiesList: [
-        new Enemy(500, 100, 120),
+        // new Enemy(500, 100, 120),
         // new Enemy(1000, 100, 120),
         // new Enemy(1020, 100, 120),
         // new Enemy(1040, 100, 120),

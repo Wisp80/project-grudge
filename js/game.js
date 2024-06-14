@@ -13,7 +13,7 @@ const game = {
 
     prepareDataForNextTick: function () {
         this.ticks++;
-        enemies.prepareEnemiesData();
+        standartBlocks.prepareStandartBlocksData();
         world.prepareWorldData();
         player.preparePlayerData();
     },
@@ -21,7 +21,7 @@ const game = {
     renderPreparedDataForNextTick: function () {
         world.draw();
         player.draw();
-        for (let i = 0; i < enemies.enemiesList.length; i++) { enemies.enemiesList[i].draw() };
+        for (let i = 0; i < standartBlocks.standartBlocksList.length; i++) { standartBlocks.standartBlocksList[i].draw() };
     },
 
     start: function () {

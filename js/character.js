@@ -1,4 +1,4 @@
-function Character(x, y, width, height, runningSpriteRight, runningSpriteLeft) {
+function Character(x, y, width, height, runningSpriteRight, runningSpriteLeft, characterID) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -12,6 +12,7 @@ function Character(x, y, width, height, runningSpriteRight, runningSpriteLeft) {
     this.runningSpriteLeft = runningSpriteLeft;
     this.leadingEdgeX = 0;
     this.trailingEdgeX = 0;
+    this.characterID = characterID;
 
     this.prepareCharacterData = function () {
         this.defineDirectionXForDrawing();
@@ -176,6 +177,27 @@ function Character(x, y, width, height, runningSpriteRight, runningSpriteLeft) {
                         };
                     };
                 };
+
+                for (let i = 0; i < standartBlocks.standartBlocksList.length; i++) {
+                    if (helper.checkIntersectionBetweenTwoNotRotatedRectangles(
+                        standartBlocks.standartBlocksList[i].character.x + standartBlocks.standartBlocksList[i].character.width, predictedHorizontalPosition.x,
+                        standartBlocks.standartBlocksList[i].character.x, predictedHorizontalPosition.x + predictedHorizontalPosition.width,
+                        standartBlocks.standartBlocksList[i].character.y + standartBlocks.standartBlocksList[i].character.height, predictedHorizontalPosition.y,
+                        standartBlocks.standartBlocksList[i].character.y, predictedHorizontalPosition.y + predictedHorizontalPosition.height
+                    ) && this.characterID !== standartBlocks.standartBlocksList[i].character.characterID) {
+                        while (helper.checkIntersectionBetweenTwoNotRotatedRectangles(
+                            standartBlocks.standartBlocksList[i].character.x + standartBlocks.standartBlocksList[i].character.width, predictedHorizontalPosition.x,
+                            standartBlocks.standartBlocksList[i].character.x, predictedHorizontalPosition.x + predictedHorizontalPosition.width,
+                            standartBlocks.standartBlocksList[i].character.y + standartBlocks.standartBlocksList[i].character.height, predictedHorizontalPosition.y,
+                            standartBlocks.standartBlocksList[i].character.y, predictedHorizontalPosition.y + predictedHorizontalPosition.height
+                        )) {
+                            predictedHorizontalPosition.x -= Math.sign(this.currentSpeedX);
+                        };
+
+                        nextX = predictedHorizontalPosition.x;
+                        isPredictedXChanged = true;
+                    };
+                };
             };
         };
 
@@ -261,6 +283,27 @@ function Character(x, y, width, height, runningSpriteRight, runningSpriteLeft) {
                             nextY = predictedVerticalPosition.y;
                             isPredictedYChanged = true;
                         };
+                    };
+                };
+
+                for (let i = 0; i < standartBlocks.standartBlocksList.length; i++) {
+                    if (helper.checkIntersectionBetweenTwoNotRotatedRectangles(
+                        standartBlocks.standartBlocksList[i].character.x + standartBlocks.standartBlocksList[i].character.width, predictedVerticalPosition.x,
+                        standartBlocks.standartBlocksList[i].character.x, predictedVerticalPosition.x + predictedVerticalPosition.width,
+                        standartBlocks.standartBlocksList[i].character.y + standartBlocks.standartBlocksList[i].character.height, predictedVerticalPosition.y,
+                        standartBlocks.standartBlocksList[i].character.y, predictedVerticalPosition.y + predictedVerticalPosition.height
+                    ) && this.characterID !== standartBlocks.standartBlocksList[i].character.characterID) {
+                        while (helper.checkIntersectionBetweenTwoNotRotatedRectangles(
+                            standartBlocks.standartBlocksList[i].character.x + standartBlocks.standartBlocksList[i].character.width, predictedVerticalPosition.x,
+                            standartBlocks.standartBlocksList[i].character.x, predictedVerticalPosition.x + predictedVerticalPosition.width,
+                            standartBlocks.standartBlocksList[i].character.y + standartBlocks.standartBlocksList[i].character.height, predictedVerticalPosition.y,
+                            standartBlocks.standartBlocksList[i].character.y, predictedVerticalPosition.y + predictedVerticalPosition.height
+                        )) {
+                            predictedVerticalPosition.y -= Math.sign(this.currentSpeedY);
+                        };
+
+                        nextY = predictedVerticalPosition.y;
+                        isPredictedYChanged = true;
                     };
                 };
             };

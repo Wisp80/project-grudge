@@ -2,7 +2,8 @@ const player = {
     character: new Character(
         playerDefaultSettings.x, playerDefaultSettings.y,
         playerDefaultSettings.width, playerDefaultSettings.height,        
-        new Animation('./src/cat/cat', 5), new Animation('./src/cat/backwards/cat.backwards', 5)
+        new Animation('./src/cat/cat', 5), new Animation('./src/cat/backwards/cat.backwards', 5),
+        0
     ),
 
     preparePlayerData: function () {

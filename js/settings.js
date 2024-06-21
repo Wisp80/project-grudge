@@ -1,6 +1,6 @@
 const playerDefaultSettings = {
     x: 320,
-    y: 100,
+    y: 80,
     width: 40,
     height: 40,
     maxJumpHeight: 200,

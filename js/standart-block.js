@@ -1,79 +1,84 @@
-function StandartBlock(x, y, width, height) {
+function StandartBlock(x, y, width, height, characterID) {
     this.character = new Character(
         x, y,
         width, height,
-        new Animation('./src/tiger/tiger', 5), new Animation('./src/tiger/backwards/tiger.backwards', 5)
+        new Animation('./src/blocks/standart-blocks/standart-block', 6), new Animation('./src/blocks/standart-blocks/backwards/standart-block', 6),
+        characterID
     );
 
-    this.prepareStandartBlockData = function () {
-        let isBlockMoving = false;
+    this.absoluteSpeed = 4;
+    this.isBlockMoving = false;
 
-        let fourWaysFromBlock = [
-            wayDown = { // farX, closeX, farY, closeY
+    this.prepareStandartBlockData = function () {
+        let blockFieldsOfView = {
+            'down': { // farX, closeX, farY, closeY
                 farX: this.character.x + this.character.width,
                 closeX: this.character.x,
                 farY: world.collisionMapHeight - this.character.height,
-                closeY: this.character.y + this.character.height,
-                name: 'wayDown'
+                closeY: this.character.y + this.character.height
             },
 
-            // wayUp = { // farX, closeX, farY, closeY
-            //     farX: this.character.x + this.character.width,
-            //     closeX: this.character.x,
-            //     farY: this.character.y,
-            //     closeY: 0,
-            //     name: 'wayUp'
-            // },
+            'up': { // farX, closeX, farY, closeY
+                farX: this.character.x + this.character.width,
+                closeX: this.character.x,
+                farY: this.character.y,
+                closeY: 0
+            },
 
-            // wayRight = { // farX, closeX, farY, closeY
-            //     farX: world.collisionMapWidth,
-            //     closeX: this.character.x + this.character.width,
-            //     farY: this.character.y + this.character.height,
-            //     closeY: this.character.y,
-            //     name: 'wayRight'
-            // },
+            'right': { // farX, closeX, farY, closeY
+                farX: world.collisionMapWidth,
+                closeX: this.character.x + this.character.width,
+                farY: this.character.y + this.character.height,
+                closeY: this.character.y
+            },
 
-            // wayLeft = { // farX, closeX, farY, closeY
-            //     farX: this.character.x,
-            //     closeX: 0,
-            //     farY: this.character.y + this.character.height,
-            //     closeY: this.character.y,
-            //     name: 'wayLeft'
-            // }
-        ];
+            'left': { // farX, closeX, farY, closeY
+                farX: this.character.x,
+                closeX: 0,
+                farY: this.character.y + this.character.height,
+                closeY: this.character.y
+            }
+        };
 
-        for (let i = 0; i < fourWaysFromBlock.length; i++) {
-            // if (this.character.currentSpeedY === 0 && this.character.currentSpeedx === 0) {
-                
-            // };
-
+        for (const fieldDirection in blockFieldsOfView) {
             if (helper.checkIntersectionBetweenTwoNotRotatedRectangles(
-                player.character.x + player.character.width, fourWaysFromBlock[i].closeX,
-                player.character.x, fourWaysFromBlock[i].farX,
-                player.character.y + player.character.height, fourWaysFromBlock[i].closeY,
-                player.character.y, fourWaysFromBlock[i].farY
-            )) {
-                if (fourWaysFromBlock[i].name === 'wayDown') {
-                    this.character.currentSpeedY = 3;
-                } else if (fourWaysFromBlock[i].name === 'wayUp') {
-                    this.character.currentSpeedY = -3;
-                } else if (fourWaysFromBlock[i].name === 'wayRight') {
-                    this.character.currentSpeedX = 3;
-                } else if (fourWaysFromBlock[i].name === 'wayLeft') {
-                    this.character.currentSpeedX = -3;
-                };
+                player.character.x + player.character.width, blockFieldsOfView[fieldDirection].closeX,
+                player.character.x, blockFieldsOfView[fieldDirection].farX,
+                player.character.y + player.character.height, blockFieldsOfView[fieldDirection].closeY,
+                player.character.y, blockFieldsOfView[fieldDirection].farY
+            ) && !this.isBlockMoving) {
+                this.isBlockMoving = true;
 
-                // isBlockMoving = true;
-            } else {
-                if (fourWaysFromBlock[i].name === 'wayDown' || fourWaysFromBlock[i].name === 'wayUp') {
-                    this.character.currentSpeedY = 0;
-                } else if (fourWaysFromBlock[i].name === 'wayRight' || fourWaysFromBlock[i].name === 'wayLeft') {
-                    this.character.currentSpeedX = 0;
+                switch (fieldDirection) {
+                    case 'down': {
+                        this.character.currentSpeedY = this.absoluteSpeed;
+                        break;
+                    };
+
+                    case 'up': {
+                        this.character.currentSpeedY = -1 * this.absoluteSpeed;
+                        break;
+                    };
+
+                    case 'right': {
+                        this.character.currentSpeedX = this.absoluteSpeed;
+                        break;
+                    };
+
+                    case 'left': {
+                        this.character.currentSpeedX = -1 * this.absoluteSpeed;
+                        break;
+                    };
+
+                    default:
+                        break;
                 };
             };
         };
 
-        console.log(isBlockMoving);
+        if (this.character.currentSpeedX === 0 && this.character.currentSpeedY === 0) {
+            this.isBlockMoving = false;
+        };
 
         if (!game.finished) { this.character.prepareCharacterData() };
     };
@@ -83,7 +88,8 @@ function StandartBlock(x, y, width, height) {
 
 const standartBlocks = {
     standartBlocksList: [
-        new StandartBlock(500, 100, 20, 20),
+        new StandartBlock(100, 400, 36, 36, 1),
+        new StandartBlock(400, 330, 36, 36, 2),
     ],
 
     prepareStandartBlocksData: function () {
